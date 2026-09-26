@@ -1,0 +1,62 @@
+stack = []
+
+# Push operation
+stack.append(10)
+stack.append(20)
+stack.append(30)
+
+print("Stack:", stack)
+
+# Pop operation
+print("Popped element:", stack.pop())
+
+print("After pop:", stack)
+
+# Peek operation
+print("Top element:", stack[-1])
+def precedence(op):
+    if op == '+' or op == '-':
+        return 1
+
+    if op == '*' or op == '/':
+        return 2
+
+    return 0
+
+
+def infix_to_postfix(expression):
+    stack = []
+    result = ""
+
+    for char in expression:
+
+        if char.isalnum():
+            result += char
+
+        elif char == '(':
+            stack.append(char)
+
+        elif char == ')':
+            while stack and stack[-1] != '(':
+                result += stack.pop()
+
+            if stack:
+                stack.pop()
+
+        else:
+            while stack and precedence(stack[-1]) >= precedence(char):
+                result += stack.pop()
+
+            stack.append(char)
+
+    while stack:
+        result += stack.pop()
+
+    return result
+
+
+# Main program
+expr = "A+B*C"
+
+print("Infix:", expr)
+print("Postfix:", infix_to_postfix(expr))
